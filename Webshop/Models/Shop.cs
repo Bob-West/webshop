@@ -65,7 +65,7 @@ namespace Webshop.Models
             public String delivery_plz;
             public String delivery_city;
             public String delivery_country;
-
+            
             public String bill_address;
             public String bill_plz;
             public String bill_city;
