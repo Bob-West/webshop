@@ -61,13 +61,13 @@ namespace Webshop.Models
             internal String passwd;
             public String phone;
 
-            public String delivery_address;
-            public String delivery_plz;
+            public String delivery_street;
+            public String delivery_zipcode;
             public String delivery_city;
             public String delivery_country;
             
             public String bill_street;
-            public String bill_plz;
+            public String bill_zipcode;
             public String bill_city;
             public String bill_country;
 
