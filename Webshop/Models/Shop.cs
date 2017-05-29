@@ -78,6 +78,8 @@ namespace Webshop.Models
             {
 
             }
+
+     
         }
 
         public static bool loginUser(String email, String passwd)
@@ -113,6 +115,53 @@ namespace Webshop.Models
             {
                 Debug.Print("DB geht nicht" + vError);
                 return false;
+            }
+        }
+
+        public static User getUserData(String email, String passwd) 
+        {
+            SqlCommand vSQLcommand;
+            SqlDataReader vSQLreader;
+            
+            try
+            {
+                using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
+                {
+                    objSQLconn.Open();
+                    vSQLcommand = new SqlCommand("SELECT * FROM tblUsers WHERE user_email=@email AND user_password =@passwd;", objSQLconn);
+                    vSQLcommand.Parameters.AddWithValue("@email", email);
+                    vSQLcommand.Parameters.AddWithValue("@passwd", passwd);
+
+                    vSQLreader = vSQLcommand.ExecuteReader();
+                    vSQLcommand.Dispose();
+
+                    if (vSQLreader.HasRows)
+                    {
+                        vSQLreader.Read();
+                        User loggedInUser = new Shop.User();
+                        loggedInUser.firstname = (string)vSQLreader["user_firstname"];
+                        loggedInUser.lastname = (string)vSQLreader["user_lastname"];
+                        loggedInUser.email = (string)vSQLreader["user_email"];
+                        loggedInUser.phone = (string)vSQLreader["user_tel"];
+                        loggedInUser.bill_street = (string)vSQLreader["user_bill_street"];
+                        loggedInUser.bill_city = (string)vSQLreader["user_bill_city"];
+                        loggedInUser.bill_country = (string)vSQLreader["user_bill_country"];
+                        loggedInUser.bill_zipcode = (string)vSQLreader["user_bill_zipcode"];
+
+                        return loggedInUser;
+                    }
+                    else
+                    {
+                        Debug.Print("falsches Login " + email + " " + passwd);
+                        return null;
+                    }
+
+                }
+            }
+            catch (Exception vError)
+            {
+                Debug.Print("DB geht nicht" + vError);
+                return null;
             }
         }
 

@@ -7,8 +7,33 @@
     <title>Summary</title>
 </head>
 <body>
+
+    <input type="button" value="Zurück zu Warenkorb" onclick="location.href='@Url.Action("Cart", "Shop")'" /> 
+
     <h1>Summary</h1>
+    @{Shop.Cart cart = (Shop.Cart)Session["Cart"]; }
     @{Shop.User user = (Shop.User)Session["User"]; }
+    @if (user != null)
+    {
     <h2>Sie sind eingeloggt als @user.firstname @user.lastname !!!</h2>
+
+    <h3>Bestellübersicht</h3>
+    
+
+    <h3>Kundendaten</h3>
+    <table>
+        <tr><td>Vorname: @user.firstname  <input type="button" id="summary_change_firstname" value="Ändern"/></td><td>Nachname: @user.lastname <input type="button" id="summary_change_lastname" value="Ändern" /></td></tr>
+        <tr><td>email: @user.email  <input type="button" id="summary_change_email" value="Ändern" /></td><td>Telephon: @user.phone <input type="button" id="summary_change_tel" value="Ändern" /></td></tr>
+        <tr><td><h4>Rechnungsadressdaten:</h4> </td></tr>
+        <tr><td>Straße: @user.bill_street  <input type="button" id="summary_change_bill_street" value="Ändern" /></td> <td>PLZ: @user.bill_zipcode <input type="button" id="summary_change__bill_zipcode" value="Ändern" /></td></tr>
+        <tr><td>Land: @user.bill_country  <input type="button" id="summary_change_bill_country" value="Ändern" /></td> <td>Stadt: @user.bill_city <input type="button" id="summary_change_bill_city" value="Ändern" /></td></tr>
+    </table>
+
+
+    }
+    else
+    {
+        <h2>User NULL</h2>
+    }
 </body>
 </html>

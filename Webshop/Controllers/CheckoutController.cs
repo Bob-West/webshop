@@ -18,7 +18,7 @@ namespace Webshop.Controllers
         }
         public ActionResult checkout_user_login()
         {
-            if(Request.Form["login_email"].Length == 0)
+            if (Request.Form["login_email"].Length == 0)
             {
                 // FEHLERMELDUNG
                 Debug.Print("email leer");
@@ -28,56 +28,67 @@ namespace Webshop.Controllers
                 // FEHLERMELDUNG
                 Debug.Print("pwd leer");
             }
-           
-            if(Shop.loginUser(Request.Form["login_email"], Request.Form["login_password"]))
+
+            if (Shop.loginUser(Request.Form["login_email"], Request.Form["login_password"]))
             {
-                return View("Summary");
-            }else
+                User loggedInUser = Shop.getUserData(Request.Form["login_email"], Request.Form["login_password"]);
+                Session["User"] = loggedInUser;
+                return View("~/Views/Summary/Index.cshtml");
+            }
+            else
             {
-                Debug.Print("login fehlgeschlagen"+ Request.Form["login_email"] +" " + Request.Form["login_password"]);
+                Debug.Print("login fehlgeschlagen" + Request.Form["login_email"] + " " + Request.Form["login_password"]);
                 return View("Index");
             }
         }
         public ActionResult checkout_user_register()
         {
-         
+
             User newUser = new User();
             // if (float.TryParse(Request.Form["inputProductAmount"], out vAmount) == false)
             if (Request.Form["salutation"].ToString() == "")
             {
                 // FEHLERMELDUNG
-            }else if (Request.Form["register_firstname"].Length == 0)
+            }
+            else if (Request.Form["register_firstname"].Length == 0)
             {
                 //FEHLERMELDUNG
-            }else  if (Request.Form["register_email"].Length == 0)
+            }
+            else if (Request.Form["register_email"].Length == 0)
             {
                 //FEHLERMELDUNG
-            }else if (Request.Form["register_lastname"].Length == 0)
+            }
+            else if (Request.Form["register_lastname"].Length == 0)
             {
                 //FEHLERMELDUNG
-            }else if (Request.Form["register_password"].Length == 0)
+            }
+            else if (Request.Form["register_password"].Length == 0)
             {
-               // FEHLERMELDUNG
+                // FEHLERMELDUNG
             }
             else if (Request.Form["register_telephone"].Length == 0)
             {
                 // FEHLERMELDUNG
-            } else if (Request.Form["register_bill_street"].Length == 0)
+            }
+            else if (Request.Form["register_bill_street"].Length == 0)
             {
                 // FEHLERMELDUNG
-            } else if (Request.Form["register_bill_zipcode"].Length == 0)
+            }
+            else if (Request.Form["register_bill_zipcode"].Length == 0)
             {
                 // FEHLERMELDUNG
-            } else if (Request.Form["register_bill_country"].Length == 0)
+            }
+            else if (Request.Form["register_bill_country"].Length == 0)
             {
                 // FEHLERMELDUNG
-            } else if (Request.Form["register_bill_city"].Length == 0)
+            }
+            else if (Request.Form["register_bill_city"].Length == 0)
             {
                 // FEHLERMELDUNG
             }
             else
             {
-                
+
                 newUser.title = Request.Form["register_title"];
                 newUser.firstname = Request.Form["register_firstname"];
                 newUser.lastname = Request.Form["register_lastname"];
@@ -104,19 +115,20 @@ namespace Webshop.Controllers
                     newUser.delivery_zipcode = Request.Form["register_bill_zipcode"];
                     newUser.delivery_city = Request.Form["register_bill_city"];
                     newUser.delivery_country = Request.Form["register_bill_country"];
-                }                
+                }
             }
 
             User registeredUser = Shop.registerUser(newUser);
             if (registeredUser != null)
             {
                 Session["User"] = newUser;
-                return View("Summary");
+                return View("~/Views/Summary/Index.cshtml");
             }
             else
             {
                 Debug.Print("kommt nicht rein");
-                return HttpNotFound();
+                return View("Index");
+               // return HttpNotFound();
             }
 
         }
