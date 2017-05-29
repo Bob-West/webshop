@@ -168,4 +168,5 @@ GO
 ALTER DATABASE [shop] SET  READ_WRITE 
 GO
 
-
+INSERT INTO tblProducts (product_name,product_price,product_description,product_thumbnail) VALUES ("Muscle", 50, "Super Produkt!","http://flock-1046.students.fhstp.ac.at/wp-content/uploads/2017/01/3scaled-600x300.jpg");
+INSERT INTO tblProducts (product_name,product_price,product_description,product_thumbnail) VALUES ("Abnehmen", 35, "Super Produkt!","http://flock-1046.students.fhstp.ac.at/wp-content/uploads/2017/01/produkt1-e1484830311881.jpg");

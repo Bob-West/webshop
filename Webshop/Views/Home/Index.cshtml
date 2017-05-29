@@ -1,8 +1,6 @@
-﻿
-@{
-    Layout = null;
-}
-
+﻿@using System;
+@using System.Diagnostics;
+@using System.Data.SqlClient;
 <!DOCTYPE html>
 
 <html>
@@ -12,11 +10,45 @@
 </head>
 <body>
     <div> 
-      <form id="formProductToCart" name="formProductToCart" method="post" action="/shop/addtocart/">
-        Menge: <input id="inputProductAmount" name="inputProductAmount" type="text" value="1" /><br/>
-        ID: <input id="inputProductID" name="inputProductID" type="text" value="1" />
-        <input type="submit" value="OK" />
-      </form>
+        @{
+            SqlCommand vSQLcommand;
+            SqlDataReader vSQLreader;
+            try
+            {
+                using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
+                {
+                    objSQLconn.Open();
+                    //read
+                    vSQLcommand = new SqlCommand("SELECT * FROM tblProducts;", objSQLconn);
+                    vSQLreader = vSQLcommand.ExecuteReader();
+                    vSQLcommand.Dispose();
+                    if (!vSQLreader.HasRows)
+                    {
+                        <h2>Keine Produkte in der Datenbank!</h2>
+                    }
+                    while (vSQLreader.Read())
+                    {
+                        int product_id = (int)vSQLreader["product_id"];
+                        String product_name = (String)vSQLreader["product_name"];
+                        decimal product_price= (decimal)vSQLreader["product_price"];
+                        String product_description  = (String)vSQLreader["product_description"];
+
+                        <form id="formProductToCart" name="formProductToCart" method="post" action="/shop/addtocart/">
+                            <input id="inputProductID" name="inputProductID" type="hidden" value="@product_id" />
+                            Name: @product_name<br />
+                            Preis: @product_price<br />
+                            Beschreibung: @product_description<br />
+                            Menge: <input id="inputProductAmount" name="inputProductAmount" type="text" value="1" /><br />
+                            <input type="submit" value="OK" />
+                        </form>
+                    }
+                }
+            }
+            catch (Exception vError)
+            {
+                Debug.WriteLine(vError);
+            }
+        }
     </div>
 </body>
 </html>
