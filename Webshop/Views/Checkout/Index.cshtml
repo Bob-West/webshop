@@ -1,7 +1,4 @@
-﻿
-@{
-    Layout = null;
-}
+﻿@using Webshop.Models;
 
 <!DOCTYPE html>
 
@@ -30,17 +27,18 @@
     </form>
 
     <h2>Registrieren</h2>
-    <form id="checkout_register" name="checkout_register" method="post" action="/shop/checkout_user_register/">
+    <form id="checkout_register" name="checkout_register" method="post" action="/checkout/checkout_user_register/">
         Salutation:
         <select name="salutation" value="">
             <option value="male">Male</option>
             <option value="female">Female</option>
         </select>
 
-        Title: <input id="register_title" name="register_title" type="password" value="" />
+        Title: <input id="register_title" name="register_title" type="text" value="" />
 
         Firstname: <input id="register_firstname" name="register_firstname" type="text" value="" />
         Lastname: <input id="register_lastname" name="register_lastname" type="text" value="" />
+        Email: <input id="register_email" name="register_email" type="text" value="" />
         Password: <input id="register_password" name="register_password" type="password" value="" />
         Telephone: <input id="register_telephone" name="register_telephone" type="tel" value="" />
 
@@ -50,6 +48,7 @@
         Country: <input id="register_bill_country" name="register_bill_country" type="text" value="" />
         City: <input id="register_bill_city" name="register_bill_city" type="text" value="" /> <br /> <br />
 
+        <input type="submit" value="OK" />
 
         <input type="checkbox" id="register_delivery_address" name="register_delivery_address" onclick="hidefunction()">
         <div id="delivery_data" name="delivery_data" style="display:none">
@@ -58,11 +57,6 @@
             <label for="register_delivery_country"> Country: <input id="register_delivery_country" name="register_delivery_country" type="text" value="" /> </label><br>
             <label for="register_delivery_city"> City: <input id="register_delivery_city" name="register_delivery_city" type="text" value="" /> </label><br
         </div>
-
-
-        <input type="submit" value="OK" />
     </form>
-
-
 </body>
 </html>

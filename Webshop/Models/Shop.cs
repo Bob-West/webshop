@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
+using System.Diagnostics;
 
 namespace Webshop.Models
 {
@@ -87,9 +88,10 @@ namespace Webshop.Models
                 using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
                 {
                     objSQLconn.Open();
-                    String insertCommand = "INSERT INTO tblUsers VALUES (" + newUser.salutation + "," + newUser.title + "," + newUser.firstname + "," + newUser.lastname + ","
-                        + newUser.email + "," + newUser.passwd + "," + newUser.bill_street + "," + newUser.bill_zipcode + "," + newUser.bill_city + "," + newUser.bill_country + ","
-                        + newUser.delivery_street + "," + newUser.delivery_zipcode + "," + newUser.delivery_city + "," + newUser.delivery_country + "," + "NULL)";
+                    String insertCommand = "INSERT INTO tblUsers (user_salutation,user_title,user_firstname,user_lastname,user_email,user_tel,user_password,user_bill_street,user_bill_zipcode,user_bill_city,user_bill_country,user_delivery_street,user_delivery_zipcode,user_delivery_city,user_delivery_country)"
+                        + "VALUES ('" + newUser.salutation + "','" + newUser.title + "','" + newUser.firstname + "','" + newUser.lastname + "','"
+                        + newUser.email + "','" + newUser.phone + "','" + newUser.passwd + "','" + newUser.bill_street + "','" + newUser.bill_zipcode + "','" + newUser.bill_city + "','" + newUser.bill_country + "','"
+                        + newUser.delivery_street + "','" + newUser.delivery_zipcode + "','" + newUser.delivery_city + "','" + newUser.delivery_country + "')";
                     vSQLcommand = new SqlCommand(insertCommand, objSQLconn);
                     int insertSuccessfull = vSQLcommand.ExecuteNonQuery();
 
@@ -99,12 +101,15 @@ namespace Webshop.Models
                     }
                     else
                     {
+                        Debug.Print("kein User insertSuccessfull falsch "+insertSuccessfull);
                         return null;
+                       
                     }
                 }
             }
             catch (Exception vError)
             {
+                Debug.Print("DB geht nicht"+vError);
                 return null;
             }
         }

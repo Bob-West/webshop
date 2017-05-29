@@ -1,0 +1,14 @@
+﻿@using Webshop.Models;
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Summary</title>
+</head>
+<body>
+    <h1>Summary</h1>
+    @{Shop.User user = (Shop.User)Session["User"]; }
+    <h2>Sie sind eingeloggt als @user.firstname @user.lastname !!!</h2>
+</body>
+</html>

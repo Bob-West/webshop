@@ -70,7 +70,7 @@ namespace Webshop.Controllers
 
                 if (Request.Form["register_delivery_address"] != null && Request.Form["register_delivery_address"] == "on")
                 {
-                    Response.Write("This checkbox is selected");
+                    //Response.Write("This checkbox is selected");
                     newUser.delivery_street = Request.Form["register_delivery_street"];
                     newUser.delivery_zipcode = Request.Form["register_delivery_zipcode"];
                     newUser.delivery_city = Request.Form["register_delivery_city"];
@@ -78,21 +78,22 @@ namespace Webshop.Controllers
                 }
                 else
                 {
-                    Response.Write("This checkbox is not selected");
+                    //Response.Write("This checkbox is not selected");
                     newUser.delivery_street = Request.Form["register_bill_street"];
                     newUser.delivery_zipcode = Request.Form["register_bill_zipcode"];
                     newUser.delivery_city = Request.Form["register_bill_city"];
                     newUser.delivery_country = Request.Form["register_bill_country"];
                 }
 
-                Session["User"] = newUser;
+                
             }
 
 
             User registeredUser = Shop.registerUser(newUser);
             if (registeredUser != null)
             {
-                return View("Cart", Session["User"] as Shop.Cart);
+                Session["User"] = newUser;
+                return View("Summary");
             }
             else
             {
