@@ -66,15 +66,20 @@ namespace Webshop.Models
             public String delivery_city;
             public String delivery_country;
             
-            public String bill_address;
+            public String bill_street;
             public String bill_plz;
             public String bill_city;
             public String bill_country;
 
             public String vat_id;
-        }
 
-        public static User registerUser()
+            public User()
+            {
+
+            }
+        }
+        //String register_salutation, String register_title, String register_firstname, String register_lastname, String register_password, String register_telephone, String register_bill_street, String register_bill_zipcode, String register_bill_country, String register_bill_city, String register_delivery_street, String register_delivery_zipcode, String register_delivery_country, String register_delivery_city
+        public static User registerUser(User newUser)
         {
             SqlCommand vSQLcommand;
             try

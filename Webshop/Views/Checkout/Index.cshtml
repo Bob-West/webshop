@@ -30,10 +30,12 @@
     </form>
 
     <h2>Registrieren</h2>
-    <form id="checkout_register" name="checkout_register" method="post" action="/shop/checkout_register/">
+    <form id="checkout_register" name="checkout_register" method="post" action="/shop/checkout_user_register/">
         Salutation:
-        <input checked="checked" name="register_salutation" type="radio" value="Male" /> Male
-        <input name="register_salutation" type="radio" value="Female" /> Female <br />
+        <select name="salutation" value="">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
 
         Title: <input id="register_title" name="register_title" type="password" value="" />
 
