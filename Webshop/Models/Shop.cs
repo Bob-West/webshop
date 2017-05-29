@@ -79,6 +79,38 @@ namespace Webshop.Models
 
             }
         }
+
+        public static bool loginUser(string email, string passwd)
+        {
+            SqlCommand vSQLcommand;
+            try
+            {
+                using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
+                {
+                    objSQLconn.Open();
+                    String select_email_pwd = "Select user_email, user_password from tblUsers where user_email ='" + email + "'AND user_password = '"+passwd+"'";
+                    vSQLcommand = new SqlCommand(select_email_pwd, objSQLconn);
+                    int insertSuccessfull = vSQLcommand.ExecuteNonQuery();
+
+                    if (insertSuccessfull > 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.Print("falsches Login " + email +passwd);
+                        return false;
+
+                    }
+                }
+            }
+            catch (Exception vError)
+            {
+                Debug.Print("DB geht nicht" + vError);
+                return false;
+            }
+        }
+
         //String register_salutation, String register_title, String register_firstname, String register_lastname, String register_password, String register_telephone, String register_bill_street, String register_bill_zipcode, String register_bill_country, String register_bill_city, String register_delivery_street, String register_delivery_zipcode, String register_delivery_country, String register_delivery_city
         public static User registerUser(User newUser)
         {

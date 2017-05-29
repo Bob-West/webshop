@@ -16,7 +16,28 @@ namespace Webshop.Controllers
         {
             return View();
         }
-
+        public ActionResult checkout_user_login()
+        {
+            if(Request.Form["login_email"].Length == 0)
+            {
+                // FEHLERMELDUNG
+                
+            }
+            else if (Request.Form["login_password"].Length == 0)
+            {
+                // FEHLERMELDUNG
+               
+            }
+           
+            if(Shop.loginUser(Request.Form["login_email"], Request.Form["login_password"]))
+            {
+                return View("Summary");
+            }else
+            {
+                Debug.Print("login fehlgeschlagen");
+                return View("Index");
+            }
+        }
         public ActionResult checkout_user_register()
         {
          
