@@ -80,23 +80,25 @@ namespace Webshop.Models
             }
         }
 
-        public static bool loginUser(string email, string passwd)
+        public static bool loginUser(String email, String passwd)
         {
             SqlCommand vSQLcommand;
+            SqlDataReader vSQLreader;
             try
             {
                 using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
                 {
                     objSQLconn.Open();
-                    vSQLcommand = new SqlCommand("SELECT user_email, user_password FROM tblUsers WHERE user_email='@email' AND user_password ='@passwd';", objSQLconn);
+                    vSQLcommand = new SqlCommand("SELECT user_email, user_password FROM tblUsers WHERE user_email=@email AND user_password =@passwd;", objSQLconn);
                     vSQLcommand.Parameters.AddWithValue("@email", email);
                     vSQLcommand.Parameters.AddWithValue("@passwd", passwd);
 
-                    int selectSuccessfull = vSQLcommand.ExecuteNonQuery();
+                    vSQLreader = vSQLcommand.ExecuteReader();
                     vSQLcommand.Dispose();
 
-                    if (selectSuccessfull > 0)
+                    if (vSQLreader.HasRows)
                     {
+                        vSQLreader.Read();
                         return true;
                     }
                     else
@@ -104,6 +106,7 @@ namespace Webshop.Models
                         Debug.Print("falsches Login " + email +" "+passwd);
                         return false;
                     }
+                   
                 }
             }
             catch (Exception vError)
