@@ -83,7 +83,7 @@ namespace Webshop.Models
                 {
                     objSQLconn.Open();
                     vSQLcommand = new SqlCommand("", objSQLconn);
-                    vSQLcommand.Parameters.AddWithValue("@product_id", vProductID);
+                    vSQLcommand.Parameters.AddWithValue("@product_id", iwas);
                     int insertSuccessfull = vSQLcommand.ExecuteNonQuery();
 
                     if(insertSuccessfull > 0)
