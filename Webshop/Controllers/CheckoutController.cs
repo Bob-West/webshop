@@ -21,12 +21,12 @@ namespace Webshop.Controllers
             if(Request.Form["login_email"].Length == 0)
             {
                 // FEHLERMELDUNG
-                
+                Debug.Print("email leer");
             }
             else if (Request.Form["login_password"].Length == 0)
             {
                 // FEHLERMELDUNG
-               
+                Debug.Print("pwd leer");
             }
            
             if(Shop.loginUser(Request.Form["login_email"], Request.Form["login_password"]))
@@ -34,7 +34,7 @@ namespace Webshop.Controllers
                 return View("Summary");
             }else
             {
-                Debug.Print("login fehlgeschlagen");
+                Debug.Print("login fehlgeschlagen"+ Request.Form["login_email"] +" " + Request.Form["login_password"]);
                 return View("Index");
             }
         }
@@ -104,11 +104,8 @@ namespace Webshop.Controllers
                     newUser.delivery_zipcode = Request.Form["register_bill_zipcode"];
                     newUser.delivery_city = Request.Form["register_bill_city"];
                     newUser.delivery_country = Request.Form["register_bill_country"];
-                }
-
-                
+                }                
             }
-
 
             User registeredUser = Shop.registerUser(newUser);
             if (registeredUser != null)

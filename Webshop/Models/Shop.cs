@@ -88,19 +88,21 @@ namespace Webshop.Models
                 using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
                 {
                     objSQLconn.Open();
-                    String select_email_pwd = "Select user_email, user_password from tblUsers where user_email ='" + email + "'AND user_password = '"+passwd+"'";
-                    vSQLcommand = new SqlCommand(select_email_pwd, objSQLconn);
-                    int insertSuccessfull = vSQLcommand.ExecuteNonQuery();
+                    vSQLcommand = new SqlCommand("SELECT user_email, user_password FROM tblUsers WHERE user_email='@email' AND user_password ='@passwd';", objSQLconn);
+                    vSQLcommand.Parameters.AddWithValue("@email", email);
+                    vSQLcommand.Parameters.AddWithValue("@passwd", passwd);
 
-                    if (insertSuccessfull > 0)
+                    int selectSuccessfull = vSQLcommand.ExecuteNonQuery();
+                    vSQLcommand.Dispose();
+
+                    if (selectSuccessfull > 0)
                     {
                         return true;
                     }
                     else
                     {
-                        Debug.Print("falsches Login " + email +passwd);
+                        Debug.Print("falsches Login " + email +" "+passwd);
                         return false;
-
                     }
                 }
             }
