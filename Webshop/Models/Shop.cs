@@ -91,7 +91,6 @@ namespace Webshop.Models
                         + newUser.email + "," + newUser.passwd + "," + newUser.bill_street + "," + newUser.bill_zipcode + "," + newUser.bill_city + "," + newUser.bill_country + ","
                         + newUser.delivery_street + "," + newUser.delivery_zipcode + "," + newUser.delivery_city + "," + newUser.delivery_country + "," + "NULL)";
                     vSQLcommand = new SqlCommand(insertCommand, objSQLconn);
-                    vSQLcommand.Parameters.AddWithValue("@product_id", iwas);
                     int insertSuccessfull = vSQLcommand.ExecuteNonQuery();
 
                     if(insertSuccessfull > 0)
