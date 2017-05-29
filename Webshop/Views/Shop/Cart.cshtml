@@ -1,0 +1,76 @@
+﻿@using Webshop.Models
+@model Shop.Cart
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Cart</title>
+</head>
+<body>
+    <div>
+        <div>
+
+            @if (Model.Items.Count <= 0)
+            {
+                <span>Der warenkorb ist leer</span>
+            }
+            else
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <th> </th>
+                            <th>Name</th>
+                            <th>Einzelpreis</th>
+                            <th>Stückzahl</th>
+                            <th>Positionssumme</th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in @Model.Items)
+                    {
+                        <tr>
+                            <td>
+                                <form id="formdeletefromcart" name="formdeletefromcart" method="post" action="/shop/deletefromcart?id=@item.ProductID">
+                                    <button id="cartitemproductid" name="cartitemproductid" type="submit" value="@item.ProductID"> X </button><br />
+                                </form>
+                            </td>
+                            <td>Name</td>
+                            <td id="cartitemproductprice">@item.Price</td>
+                            <td>
+                                <form id="formdeletefromcart" name="formdeletefromcart" method="post" action="/shop/updateAmount?id=@item.ProductID">
+                                    <input id="addamount" name="addamount" type="text" value="@item.Amount" />
+                                    <button id="aktualisierbutton" name="aktualisierbutton" type="submit" value=""> Aktualisieren </button>
+                                </form>
+                            </td>
+                            <td>@Shop.summarizePricebyID(@item.ProductID)</td>
+                        </tr>
+                    }
+                </table>
+            }
+            <br /><br />
+            <table>
+                <thead>
+                    <tr>
+                        <th>Beschreibung</th>
+                        <th>Preis</th>
+                    </tr>
+                </thead>
+                <tr><td>Standard Versandkosten </td><td>10€</td></tr>
+                <tr><td>Gesamtpreis inklusive Versandkosten  </td><td>@(@Model.getCartSum() + 10)€</td></tr>
+
+            </table>
+
+        </div>
+
+        <input type="button" value="Zurück" onclick="location.href='@Url.Action("Index", "Home")'" />
+        <input type="button" value="Weiter" onclick="location.href='@Url.Action("Index", "Checkout")'" />
+
+    </div>
+</body>
+</html>
