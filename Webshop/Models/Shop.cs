@@ -87,13 +87,15 @@ namespace Webshop.Models
                 using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
                 {
                     objSQLconn.Open();
-                    vSQLcommand = new SqlCommand("", objSQLconn);
-                    vSQLcommand.Parameters.AddWithValue("@product_id", iwas);
+                    String insertCommand = "INSERT INTO tblUsers VALUES (" + newUser.salutation + "," + newUser.title + "," + newUser.firstname + "," + newUser.lastname + ","
+                        + newUser.email + "," + newUser.passwd + "," + newUser.bill_street + "," + newUser.bill_zipcode + "," + newUser.bill_city + "," + newUser.bill_country + ","
+                        + newUser.delivery_street + "," + newUser.delivery_zipcode + "," + newUser.delivery_city + "," + newUser.delivery_country + "," + "NULL)";
+                    vSQLcommand = new SqlCommand(insertCommand, objSQLconn);
                     int insertSuccessfull = vSQLcommand.ExecuteNonQuery();
 
                     if(insertSuccessfull > 0)
                     {
-
+                        return newUser;
                     }
                     else
                     {
