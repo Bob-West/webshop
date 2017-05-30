@@ -155,7 +155,6 @@ namespace Webshop.Models
                         Debug.Print("falsches Login " + email + " " + passwd);
                         return null;
                     }
-
                 }
             }
             catch (Exception vError)
@@ -202,7 +201,6 @@ namespace Webshop.Models
                     {
                         Debug.Print("kein User insertSuccessfull falsch "+insertSuccessfull);
                         return null;
-                       
                     }
                 }
             }
@@ -300,7 +298,6 @@ namespace Webshop.Models
             {
                 found.Amount = amount;
                 return true;
-
             }
             else
             {
@@ -322,9 +319,7 @@ namespace Webshop.Models
                 decimal preis = found.Price;
                 float amount = found.Amount;
                 ergebnis = (int)preis * amount;
-
             }
-
             return ergebnis;
         }
     }

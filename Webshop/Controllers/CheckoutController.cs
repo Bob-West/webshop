@@ -49,10 +49,13 @@ namespace Webshop.Controllers
             if (Request.Form["salutation"].ToString() == "")
             {
                 // FEHLERMELDUNG
+
+               
             }
             else if (Request.Form["register_firstname"].Length == 0)
             {
                 //FEHLERMELDUNG
+               
             }
             else if (Request.Form["register_email"].Length == 0)
             {

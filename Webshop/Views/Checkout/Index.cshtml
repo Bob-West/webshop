@@ -45,12 +45,20 @@
         <h3>Billaddress:</h3>
         Street: <input id="register_bill_street" name="register_bill_street" type="text" value="" />
         Zipcode: <input id="register_bill_zipcode" name="register_bill_zipcode" type="text" value="" />
-        Country: <input id="register_bill_country" name="register_bill_country" type="text" value="" />
+       
+        <select id="register_bill_country" name="register_bill_country">
+            <option value="AT">Österreich</option>
+            <option value="DE">Deutschland </option>
+            <option value="NL">Niederlande</option>
+            <option value="EN">Großbritannien</option>
+        </select> 
+
         City: <input id="register_bill_city" name="register_bill_city" type="text" value="" /> <br /> <br />
 
         <input type="submit" value="OK" />
 
         <input type="checkbox" id="register_delivery_address" name="register_delivery_address" onclick="hidefunction()">
+        <h3>Deliveryaddress</h3>
         <div id="delivery_data" name="delivery_data" style="display:none">
             <label for="register_delivery_street"> Street: <input id="register_delivery_street" name="register_delivery_street" type="text" value="" /> </label><br>
             <label for="register_delivery_zipcode"> Zipcode: <input id="register_delivery_zipcode" name="register_delivery_zipcode" type="text" value="" /> </label><br>
