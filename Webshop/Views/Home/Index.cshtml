@@ -39,7 +39,7 @@
                             Preis: @product_price<br />
                             Beschreibung: @product_description<br />
                             Menge: <input id="inputProductAmount" name="inputProductAmount" type="text" value="1" /><br />
-                            <input type="submit" value="OK" />
+                            <input type="submit" value="In den Wahrenkorb legen" />
                         </form>
                     }
                 }
@@ -49,6 +49,7 @@
                 Debug.WriteLine(vError);
             }
         }
+        <br /><input value="Zum Warenkorb" onclick="location.href='/Shop/Cart'" type="button">
     </div>
 </body>
 </html>
