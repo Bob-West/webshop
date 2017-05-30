@@ -86,7 +86,6 @@ namespace Webshop.Models
         {
             SqlCommand vSQLcommand;
             SqlDataReader vSQLreader;
-            int i;
             try
             {
                 using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
