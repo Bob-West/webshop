@@ -14,7 +14,10 @@ namespace Webshop.Controllers
         // GET: Checkout
         public ActionResult Index()
         {
-            return View();
+            if(Session["User"] == null)
+                return View();
+            else
+                return View("~/Views/Summary/Index.cshtml");
         }
         public ActionResult checkout_user_login()
         {
