@@ -36,19 +36,22 @@ namespace Webshop.Models
             public int ProductID;
             public float Amount;
             public decimal Price;
+            public String name;
 
             public CartItem()
             {
                 ProductID = 0;
                 Amount = 0;
                 Price = 0;
+                name = "";
             }
 
-            public CartItem(int vProductID, float vAmount, decimal vPrice)
+            public CartItem(int vProductID, float vAmount, decimal vPrice,String name)
             {
                 this.ProductID = vProductID;
                 this.Amount = vAmount;
                 this.Price = vPrice;
+                this.name = name;
             }
         }
 
@@ -216,13 +219,14 @@ namespace Webshop.Models
             SqlCommand vSQLcommand;
             SqlDataReader vSQLreader;
             decimal vProductPrice;
+            String vName;
             try
             {
                 using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
                 {
                     objSQLconn.Open();
                     //read
-                    vSQLcommand = new SqlCommand("SELECT product_id, product_price FROM tblProducts WHERE product_id=@product_id;", objSQLconn);
+                    vSQLcommand = new SqlCommand("SELECT product_id, product_price, product_name FROM tblProducts WHERE product_id=@product_id;", objSQLconn);
                     vSQLcommand.Parameters.AddWithValue("@product_id", vProductID);
                     vSQLreader = vSQLcommand.ExecuteReader();
                     vSQLcommand.Dispose();
@@ -232,6 +236,7 @@ namespace Webshop.Models
                         // read Methode schaltet eins weiter
                         vSQLreader.Read();
                         vProductPrice = (decimal)vSQLreader["product_price"];
+                        vName = (String)vSQLreader["product_name"];
                     }
                     else
                     {
@@ -260,7 +265,7 @@ namespace Webshop.Models
                 }
                 else
                 {
-                    vCart.Items.Add(new CartItem(vProductID, vAmount, vProductPrice));
+                    vCart.Items.Add(new CartItem(vProductID, vAmount, vProductPrice,vName));
                 }
 
                 HttpContext.Current.Session["Cart"] = vCart;

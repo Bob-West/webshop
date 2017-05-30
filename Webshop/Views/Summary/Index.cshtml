@@ -19,17 +19,26 @@
     <h2>Sie sind eingeloggt als @user.firstname @user.lastname !!!</h2>
 
     <h3>Bestellübersicht</h3>
-    
+    @if (cart.Items != null)
+    {
+        @cart.Items
+    }
+
 
     <h3>Kundendaten</h3>
     <table>
-        <tr><td>Vorname: @user.firstname  <input type="button" id="summary_change_firstname" value="Ändern"/></td><td>Nachname: @user.lastname <input type="button" id="summary_change_lastname" value="Ändern" /></td></tr>
-        <tr><td>email: @user.email  <input type="button" id="summary_change_email" value="Ändern" /></td><td>Telephon: @user.phone <input type="button" id="summary_change_tel" value="Ändern" /></td></tr>
+        <tr><td>Vorname: @user.firstname  </td><td>Nachname: @user.lastname </td></tr>
+        <tr><td>email: @user.email  </td><td>Telephon: @user.phone </td></tr>
         <tr><td><h4>Rechnungsadressdaten:</h4> </td></tr>
-        <tr><td>Straße: @user.bill_street  <input type="button" id="summary_change_bill_street" value="Ändern" /></td> <td>PLZ: @user.bill_zipcode <input type="button" id="summary_change__bill_zipcode" value="Ändern" /></td></tr>
-        <tr><td>Land: @user.bill_country  <input type="button" id="summary_change_bill_country" value="Ändern" /></td> <td>Stadt: @user.bill_city <input type="button" id="summary_change_bill_city" value="Ändern" /></td></tr>
+        <tr><td>Straße: @user.bill_street  <td>PLZ: @user.bill_zipcode </td></tr>
+        <tr><td>Land: @user.bill_country  </td> <td>Stadt: @user.bill_city </td></tr>
+        <tr><td><h4>Lieferadressdaten:</h4> </td></tr>
+        <tr><td>Straße: @user.delivery_street  <td>PLZ: @user.delivery_zipcode </td></tr>
+        <tr><td>Land: @user.delivery_country  </td> <td>Stadt: @user.delivery_city </td></tr>
+
     </table>
 
+    <input type="button" id="change_user_data_button" value="Benutzerdaten ändern" />
 
     }
     else

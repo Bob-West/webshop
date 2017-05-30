@@ -53,8 +53,10 @@ namespace Webshop.Controllers
 
             if(Shop.AddtoCartItem(vProductID, vAmount))
             {
-                return View("Cart", Session["Cart"] as Shop.Cart);
-            }else
+                //return View("Index", Session["Cart"] as Shop.Cart);
+                return View("~/Views/Home/Index.cshtml", Session["Cart"] as Shop.Cart);
+            }
+            else
             {
                 Debug.Print("kommt nicht rein");
                 return HttpNotFound();
