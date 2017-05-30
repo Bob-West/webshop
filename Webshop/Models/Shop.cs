@@ -175,7 +175,7 @@ namespace Webshop.Models
                 {
                     objSQLconn.Open();
                     String insertCommand = "INSERT INTO tblUsers (user_salutation,user_title,user_firstname,user_lastname,user_email,user_tel,user_password,user_bill_street,user_bill_zipcode,user_bill_city,user_bill_country,user_delivery_street,user_delivery_zipcode,user_delivery_city,user_delivery_country)"
-                        + "VALUES (@user_salutation, @user_title, @user_firstname, @user_lastname, @user_tel, @user_password, @user_bill_street, @user_bill_zipcode, @user_bill_city, @user_bill_country, @user_delivery_street, @user_delivery_zipcode, @user_delivery_city, @user_delivery_country)";
+                        + "VALUES (@user_salutation, @user_title, @user_firstname, @user_lastname,@user_email, @user_tel, @user_password, @user_bill_street, @user_bill_zipcode, @user_bill_city, @user_bill_country, @user_delivery_street, @user_delivery_zipcode, @user_delivery_city, @user_delivery_country)";
                     vSQLcommand = new SqlCommand(insertCommand, objSQLconn);
                     vSQLcommand.Parameters.AddWithValue("@user_salutation", newUser.salutation);
                     vSQLcommand.Parameters.AddWithValue("@user_title", newUser.title);
