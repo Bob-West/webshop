@@ -25,45 +25,92 @@
         Password: <input id="login_password" name="login_password" type="password" value="" />
         <input type="submit" value="OK" /><br /> <br />
     </form>
-
     <h2>Registrieren</h2>
     <form id="checkout_register" name="checkout_register" method="post" action="/checkout/checkout_user_register/">
-        Salutation:
-        <select name="salutation" value="">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-        </select>
-
-        Title: <input id="register_title" name="register_title" type="text" value="" />
-
-        Firstname: <input id="register_firstname" name="register_firstname" type="text" value="" />
-        Lastname: <input id="register_lastname" name="register_lastname" type="text" value="" />
-        Email: <input id="register_email" name="register_email" type="email" value="" />
-        Password: <input id="register_password" name="register_password" type="password" value="" />
-        Telephone: <input id="register_telephone" name="register_telephone" type="tel" value="" />
-
-        <h3>Billaddress:</h3>
-        Street: <input id="register_bill_street" name="register_bill_street" type="text" value="" />
-        Zipcode: <input id="register_bill_zipcode" name="register_bill_zipcode" type="text" value="" />
-       
-        <select id="register_bill_country" name="register_bill_country">
-            <option value="AT">Österreich</option>
-            <option value="DE">Deutschland </option>
-            <option value="NL">Niederlande</option>
-            <option value="EN">Großbritannien</option>
-        </select> 
-
-        City: <input id="register_bill_city" name="register_bill_city" type="text" value="" /> <br /> <br />
-
+        <table>
+            <tr><td>
+                    <label>Salutation:</label>
+    <select name="salutation" value="">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+    </select>
+</td>
+                <td>
+                    <label>Title:</label>
+                    <input id="register_title" name="register_title" type="text" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Firstname:</label>
+                    <input id="register_firstname" name="register_firstname" type="text" value="" />
+                </td>
+                <td>
+                    <label>Lastname:</label>
+                    <input id="register_lastname" name="register_lastname" type="text" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Email:</label>
+                    <input id="register_email" name="register_email" type="email" value="" />
+                </td>
+                <td>
+                    <label>Password:</label>
+                    <input id="register_password" name="register_password" type="password" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Telephone:</label>
+                    <input id="register_telephone" name="register_telephone" type="tel" value="" />
+                </td>
+            </tr>
+</table>
+       <h3>Billaddress:</h3>
+        <table>
+            <tr>
+                <td>
+                    <label>Street:</label>
+                    <input id="register_bill_street" name="register_bill_street" type="text" value="" />
+                </td>
+                <td>
+                    <label>Zipcode:</label>
+                    <input id="register_bill_zipcode" name="register_bill_zipcode" type="text" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Country:</label>
+                    <select id="register_bill_country" name="register_bill_country">
+                        <option value="AT">Österreich</option>
+                        <option value="DE">Deutschland </option>
+                        <option value="NL">Niederlande</option>
+                        <option value="EN">Großbritannien</option>
+                    </select>
+                </td>
+                <td>
+                    <label>City:</label>
+                    <input id="register_bill_city" name="register_bill_city" type="text" value="" />
+                    <br />
+                    <br />
+                </td>
+            </tr>
+        </table>
         <input type="submit" value="OK" />
-
         <input type="checkbox" id="register_delivery_address" name="register_delivery_address" onclick="hidefunction()">
         <h3>Deliveryaddress</h3>
         <div id="delivery_data" name="delivery_data" style="display:none">
-            <label for="register_delivery_street"> Street: <input id="register_delivery_street" name="register_delivery_street" type="text" value="" /> </label><br>
-            <label for="register_delivery_zipcode"> Zipcode: <input id="register_delivery_zipcode" name="register_delivery_zipcode" type="text" value="" /> </label><br>
-            <label for="register_delivery_country"> Country: <input id="register_delivery_country" name="register_delivery_country" type="text" value="" /> </label><br>
-            <label for="register_delivery_city"> City: <input id="register_delivery_city" name="register_delivery_city" type="text" value="" /> </label><br
+            <table>
+                <tr>
+                    <td> <label for="register_delivery_street"> Street: <input id="register_delivery_street" name="register_delivery_street" type="text" value="" /> </label></td>
+                    <td><label for="register_delivery_zipcode"> Zipcode: <input id="register_delivery_zipcode" name="register_delivery_zipcode" type="text" value="" /> </label></td>   
+                </tr>
+                <tr>
+                    <td><label for="register_delivery_country"> Country: <input id="register_delivery_country" name="register_delivery_country" type="text" value="" /> </label></td>
+                    <td><label for="register_delivery_city"> City: <input id="register_delivery_city" name="register_delivery_city" type="text" value="" /> </label></td>
+                </tr>
+            </table>
         </div>
     </form>
 </body>
