@@ -8,37 +8,51 @@
 </head>
 <body>
 
-    <input type="button" value="Zurück zu Warenkorb" onclick="location.href='@Url.Action("Cart", "Shop")'" /> 
-    <input type="button" value="Zurück zur Produktliste" onclick="location.href='@Url.Action("Index", "Home")'" /> 
+    <input type="button" value="Zurück zu Warenkorb" onclick="location.href='@Url.Action("Cart", "Shop")'" />
+    <input type="button" value="Zurück zur Produktliste" onclick="location.href='@Url.Action("Index", "Home")'" />
 
     <h1>Summary</h1>
     @{Shop.Cart cart = (Shop.Cart)Session["Cart"]; }
     @{Shop.User user = (Shop.User)Session["User"]; }
     @if (user != null)
     {
-    <h2>Sie sind eingeloggt als @user.firstname @user.lastname !!!</h2>
+        <h2>Sie sind eingeloggt als @user.firstname @user.lastname !!!</h2>
 
-    <h3>Bestellübersicht</h3>
-    @if (cart.Items != null)
-    {
-        @cart.Items
-    }
+        <h3>Bestellübersicht</h3>
+        if (cart.Items != null)
+        {
+            <h1>Produkte</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Einzelpreis</th>
+                        <th>Stückzahl</th>
+                        <th>Positionssumme</th>
+                    </tr>
+                </thead>
+                @foreach (var item in @cart.Items)
+                {
+                    <tr><td>@item.name</td><td>@item.Price</td><td>@item.Amount</td><td>@(item.Amount * (float)item.Price)</td></tr>
+                }
+            </table>
+        }
 
 
-    <h3>Kundendaten</h3>
-    <table>
-        <tr><td>Vorname: @user.firstname  </td><td>Nachname: @user.lastname </td></tr>
-        <tr><td>email: @user.email  </td><td>Telephon: @user.phone </td></tr>
-        <tr><td><h4>Rechnungsadressdaten:</h4> </td></tr>
-        <tr><td>Straße: @user.bill_street  <td>PLZ: @user.bill_zipcode </td></tr>
-        <tr><td>Land: @user.bill_country  </td> <td>Stadt: @user.bill_city </td></tr>
-        <tr><td><h4>Lieferadressdaten:</h4> </td></tr>
-        <tr><td>Straße: @user.delivery_street  <td>PLZ: @user.delivery_zipcode </td></tr>
-        <tr><td>Land: @user.delivery_country  </td> <td>Stadt: @user.delivery_city </td></tr>
+        <h3>Kundendaten</h3>
+        <table>
+            <tr><td>Vorname: @user.firstname  </td><td>Nachname: @user.lastname </td></tr>
+            <tr><td>email: @user.email  </td><td>Telephon: @user.phone </td></tr>
+            <tr><td><h4>Rechnungsadressdaten:</h4> </td></tr>
+            <tr><td>Straße: @user.bill_street  <td>PLZ: @user.bill_zipcode </td></tr>
+            <tr><td>Land: @user.bill_country  </td> <td>Stadt: @user.bill_city </td></tr>
+            <tr><td><h4>Lieferadressdaten:</h4> </td></tr>
+            <tr><td>Straße: @user.delivery_street  <td>PLZ: @user.delivery_zipcode </td></tr>
+            <tr><td>Land: @user.delivery_country  </td> <td>Stadt: @user.delivery_city </td></tr>
 
-    </table>
+        </table>
 
-    <input type="button" id="change_user_data_button" value="Benutzerdaten ändern" />
+        <input type="button" id="change_user_data_button" value="Benutzerdaten ändern" />
 
     }
     else

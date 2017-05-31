@@ -51,15 +51,22 @@ namespace Webshop.Controllers
                 }
             }
 
-            if(Shop.AddtoCartItem(vProductID, vAmount))
+            if (vAmount > 0)
             {
-                //return View("Index", Session["Cart"] as Shop.Cart);
+                if (Shop.AddtoCartItem(vProductID, vAmount))
+                {
+                    //return View("Index", Session["Cart"] as Shop.Cart);
+                    return View("~/Views/Home/Index.cshtml", Session["Cart"] as Shop.Cart);
+                }
+                else
+                {
+                    Debug.Print("kommt nicht rein");
+                    return HttpNotFound();
+                }
+            }else
+            {
+                //FEHLERMELDUNG AMOUNT MUSS POSITIV SEIN
                 return View("~/Views/Home/Index.cshtml", Session["Cart"] as Shop.Cart);
-            }
-            else
-            {
-                Debug.Print("kommt nicht rein");
-                return HttpNotFound();
             }
                  
         }
@@ -96,15 +103,22 @@ namespace Webshop.Controllers
                 }
             }
 
-
-            if (Shop.updateItemAmount(id,vAmount))
+            if (vAmount > 0)
             {
-                return View("Cart", Session["Cart"] as Shop.Cart);
+                if (Shop.updateItemAmount(id, vAmount))
+                {
+                    return View("Cart", Session["Cart"] as Shop.Cart);
+                }
+                else
+                {
+                    Debug.Print("kommt nicht rein");
+                    return HttpNotFound();
+                }
             }
             else
             {
-                Debug.Print("kommt nicht rein");
-                return HttpNotFound();
+                //FEHLERMELDUNG amount muss positiv sein
+                return View("Cart", Session["Cart"] as Shop.Cart);
             }
         }
     }
