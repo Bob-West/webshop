@@ -85,7 +85,7 @@ namespace Webshop.Models
      
         }
 
-        public static bool loginUser(String email, String passwd)
+        public static User loginUser(String email, String passwd)
         {
             SqlCommand vSQLcommand;
             SqlDataReader vSQLreader;
@@ -94,9 +94,9 @@ namespace Webshop.Models
                 using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
                 {
                     objSQLconn.Open();
-                    vSQLcommand = new SqlCommand("SELECT user_email, user_password FROM tblUsers WHERE user_email=@email AND user_password =@passwd;", objSQLconn);
+                    vSQLcommand = new SqlCommand("SELECT * FROM tblUsers WHERE user_email=@email AND user_password =@passwd;", objSQLconn);
                     vSQLcommand.Parameters.AddWithValue("@email", email);
-                    vSQLcommand.Parameters.AddWithValue("@passwd", passwd);
+                    vSQLcommand.Parameters.AddWithValue("@passwd", Encrypt.Pwd_Encode(passwd));
 
                     vSQLreader = vSQLcommand.ExecuteReader();
                     vSQLcommand.Dispose();
@@ -104,12 +104,22 @@ namespace Webshop.Models
                     if (vSQLreader.HasRows)
                     {
                         vSQLreader.Read();
-                        return true;
+                        User loggedInUser = new Shop.User();
+                        loggedInUser.firstname = (String)vSQLreader["user_firstname"];
+                        loggedInUser.lastname = (String)vSQLreader["user_lastname"];
+                        loggedInUser.email = (String)vSQLreader["user_email"];
+                        loggedInUser.phone = (String)vSQLreader["user_tel"];
+                        loggedInUser.bill_street = (String)vSQLreader["user_bill_street"];
+                        loggedInUser.bill_city = (String)vSQLreader["user_bill_city"];
+                        loggedInUser.bill_country = (String)vSQLreader["user_bill_country"];
+                        loggedInUser.bill_zipcode = (String)vSQLreader["user_bill_zipcode"];
+
+                        return loggedInUser;
                     }
                     else
                     {
                         Debug.Print("falsches Login " + email +" "+passwd);
-                        return false;
+                        return null;
                     }
                    
                 }
@@ -117,11 +127,11 @@ namespace Webshop.Models
             catch (Exception vError)
             {
                 Debug.Print("DB geht nicht" + vError);
-                return false;
+                return null;
             }
         }
 
-        public static User getUserData(String email, String passwd) 
+        /**public static User getUserData(String email, String passwd) 
         {
             SqlCommand vSQLcommand;
             SqlDataReader vSQLreader;
@@ -165,7 +175,7 @@ namespace Webshop.Models
                 Debug.Print("DB geht nicht" + vError);
                 return null;
             }
-        }
+        }*/
 
         //String register_salutation, String register_title, String register_firstname, String register_lastname, String register_password, String register_telephone, String register_bill_street, String register_bill_zipcode, String register_bill_country, String register_bill_city, String register_delivery_street, String register_delivery_zipcode, String register_delivery_country, String register_delivery_city
         public static User registerUser(User newUser)
@@ -185,7 +195,7 @@ namespace Webshop.Models
                     vSQLcommand.Parameters.AddWithValue("@user_lastname", newUser.lastname);
                     vSQLcommand.Parameters.AddWithValue("@user_email", newUser.email);
                     vSQLcommand.Parameters.AddWithValue("@user_tel", newUser.phone);
-                    vSQLcommand.Parameters.AddWithValue("@user_password", newUser.passwd);
+                    vSQLcommand.Parameters.AddWithValue("@user_password", Encrypt.Pwd_Encode(newUser.passwd));
                     vSQLcommand.Parameters.AddWithValue("@user_bill_street", newUser.bill_street);
                     vSQLcommand.Parameters.AddWithValue("@user_bill_zipcode", newUser.bill_zipcode);
                     vSQLcommand.Parameters.AddWithValue("@user_bill_city", newUser.bill_city);
