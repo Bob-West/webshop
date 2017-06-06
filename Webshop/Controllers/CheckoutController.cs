@@ -60,7 +60,7 @@ namespace Webshop.Controllers
             else if (Request.Form["register_firstname"].Length == 0)
             {
                 //FEHLERMELDUNG
-               
+
             }
             else if (Request.Form["register_email"].Length == 0)
             {
@@ -124,18 +124,27 @@ namespace Webshop.Controllers
                 }
             }
 
-            User registeredUser = Shop.registerUser(newUser);
-            if (registeredUser != null)
+            if (Shop.checkEmail(newUser.email) == false)
             {
-                Session["User"] = newUser;
-                return View("~/Views/Summary/Index.cshtml");
+                Debug.Print("email bereits vorhanden! : "+newUser.email);
+                return View("Index");
             }
             else
             {
-                Debug.Print("kommt nicht rein");
-                return View("Index");
-            }
+                User registeredUser = Shop.registerUser(newUser);
+                if (registeredUser != null)
+                {
 
+                    Session["User"] = newUser;
+                    return View("~/Views/Summary/Index.cshtml");
+                }
+                else
+                {
+                    Debug.Print("kommt nicht rein");
+                    return View("Index");
+                }
+            }
+           
         }
 
         public ActionResult checkout_user_logout()

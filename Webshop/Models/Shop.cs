@@ -46,7 +46,7 @@ namespace Webshop.Models
                 name = "";
             }
 
-            public CartItem(int vProductID, float vAmount, decimal vPrice,String name)
+            public CartItem(int vProductID, float vAmount, decimal vPrice, String name)
             {
                 this.ProductID = vProductID;
                 this.Amount = vAmount;
@@ -69,7 +69,7 @@ namespace Webshop.Models
             public String delivery_zipcode;
             public String delivery_city;
             public String delivery_country;
-            
+
             public String bill_street;
             public String bill_zipcode;
             public String bill_city;
@@ -82,7 +82,7 @@ namespace Webshop.Models
 
             }
 
-     
+
         }
 
         public static User loginUser(String email, String passwd)
@@ -118,10 +118,10 @@ namespace Webshop.Models
                     }
                     else
                     {
-                        Debug.Print("falsches Login " + email +" "+passwd);
+                        Debug.Print("falsches Login " + email + " " + passwd);
                         return null;
                     }
-                   
+
                 }
             }
             catch (Exception vError)
@@ -185,9 +185,12 @@ namespace Webshop.Models
             {
                 using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
                 {
+
+
+
                     objSQLconn.Open();
-                    String insertCommand = "INSERT INTO tblUsers (user_salutation,user_title,user_firstname,user_lastname,user_email,user_tel,user_password,user_bill_street,user_bill_zipcode,user_bill_city,user_bill_country,user_delivery_street,user_delivery_zipcode,user_delivery_city,user_delivery_country)"
-                        + "VALUES (@user_salutation, @user_title, @user_firstname, @user_lastname,@user_email, @user_tel, @user_password, @user_bill_street, @user_bill_zipcode, @user_bill_city, @user_bill_country, @user_delivery_street, @user_delivery_zipcode, @user_delivery_city, @user_delivery_country)";
+                    String insertCommand = "INSERT INTO tblUsers (user_salutation,user_title,user_firstname,user_lastname,user_email,user_tel,user_password,user_bill_street,user_bill_zipcode,user_bill_city,user_bill_country,user_delivery_street,user_delivery_zipcode,user_delivery_city,user_delivery_country) " +
+                        "VALUES (@user_salutation, @user_title, @user_firstname, @user_lastname,@user_email, @user_tel, @user_password, @user_bill_street, @user_bill_zipcode, @user_bill_city, @user_bill_country, @user_delivery_street, @user_delivery_zipcode, @user_delivery_city, @user_delivery_country)";
                     vSQLcommand = new SqlCommand(insertCommand, objSQLconn);
                     vSQLcommand.Parameters.AddWithValue("@user_salutation", newUser.salutation);
                     vSQLcommand.Parameters.AddWithValue("@user_title", newUser.title);
@@ -206,81 +209,53 @@ namespace Webshop.Models
                     vSQLcommand.Parameters.AddWithValue("@user_delivery_country", newUser.delivery_country);
                     int insertSuccessfull = vSQLcommand.ExecuteNonQuery();
 
-                    if(insertSuccessfull > 0)
+                    if (insertSuccessfull > 0)
                     {
                         return newUser;
                     }
                     else
                     {
-                        Debug.Print("kein User insertSuccessfull falsch "+insertSuccessfull);
+                        Debug.Print("kein User insertSuccessfull falsch " + insertSuccessfull);
                         return null;
                     }
                 }
             }
             catch (Exception vError)
             {
-                Debug.Print("DB geht nicht"+vError);
+                Debug.Print("DB geht nnicht" + vError);
                 return null;
             }
         }
-
-        public static bool AddtoCartItem(int vProductID, float vAmount)
+        public static bool checkEmail(string email)
         {
             SqlCommand vSQLcommand;
             SqlDataReader vSQLreader;
-            decimal vProductPrice;
-            String vName;
+            string select_email;
             try
             {
                 using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
                 {
                     objSQLconn.Open();
                     //read
-                    vSQLcommand = new SqlCommand("SELECT product_id, product_price, product_name FROM tblProducts WHERE product_id=@product_id;", objSQLconn);
-                    vSQLcommand.Parameters.AddWithValue("@product_id", vProductID);
+                    vSQLcommand = new SqlCommand("SELECT user_email FROM tblUsers", objSQLconn);
                     vSQLreader = vSQLcommand.ExecuteReader();
                     vSQLcommand.Dispose();
 
-                    if (vSQLreader.HasRows)
+                    while (vSQLreader.HasRows)
                     {
-                        // read Methode schaltet eins weiter
                         vSQLreader.Read();
-                        vProductPrice = (decimal)vSQLreader["product_price"];
-                        vName = (String)vSQLreader["product_name"];
+                        select_email = (String)vSQLreader["user_email"];
+                        if (select_email.Equals(email))
+                        {
+                            //FEHLERMELDUNG
+                            Debug.Write("email gibts schon" + email);
+                            return false;
+                        }
                     }
-                    else
-                    {
-                        return false;
-                    }
+                   
                     vSQLreader.Close();
+                    return true;
                 }
-
-                Cart vCart;
-                if (HttpContext.Current.Session["Cart"] == null)
-                {
-                    vCart = new Cart();
-                }
-                else
-                {
-                    vCart = HttpContext.Current.Session["Cart"] as Cart;
-                }
-
-                var dict = vCart.Items.ToDictionary(x => x.ProductID);
-
-                CartItem found;
-                if (dict.TryGetValue(vProductID, out found))
-                {
-                    found.Amount += vAmount;
-
-                }
-                else
-                {
-                    vCart.Items.Add(new CartItem(vProductID, vAmount, vProductPrice,vName));
-                }
-
-                HttpContext.Current.Session["Cart"] = vCart;
-
-                return true;
             }
             catch (Exception vError)
             {
@@ -288,54 +263,118 @@ namespace Webshop.Models
             }
         }
 
-        public static bool deleteItemfromCart(int vProductID)
-        {
-            Cart vCart;
-            vCart = HttpContext.Current.Session["Cart"] as Cart;
-
-            vCart.Items.RemoveAll(x => x.ProductID == vProductID);
-
-            HttpContext.Current.Session["Cart"] = vCart;
-            return true;
-
-        }
-
-        public static bool updateItemAmount(int vProductID, float currentAmount)
-        {
-            Cart vCart;
-            vCart = HttpContext.Current.Session["Cart"] as Cart;
-            float amount = currentAmount;
-
-            var dict = vCart.Items.ToDictionary(x => x.ProductID);
-
-            CartItem found;
-            if (dict.TryGetValue(vProductID, out found))
+        public static bool AddtoCartItem(int vProductID, float vAmount)
             {
-                found.Amount = amount;
+                SqlCommand vSQLcommand;
+                SqlDataReader vSQLreader;
+                decimal vProductPrice;
+                String vName;
+                try
+                {
+                    using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
+                    {
+                        objSQLconn.Open();
+                        //read
+                        vSQLcommand = new SqlCommand("SELECT product_id, product_price, product_name FROM tblProducts WHERE product_id=@product_id;", objSQLconn);
+                        vSQLcommand.Parameters.AddWithValue("@product_id", vProductID);
+                        vSQLreader = vSQLcommand.ExecuteReader();
+                        vSQLcommand.Dispose();
+
+                        if (vSQLreader.HasRows)
+                        {
+                            // read Methode schaltet eins weiter
+                            vSQLreader.Read();
+                            vProductPrice = (decimal)vSQLreader["product_price"];
+                            vName = (String)vSQLreader["product_name"];
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                        vSQLreader.Close();
+                    }
+
+                    Cart vCart;
+                    if (HttpContext.Current.Session["Cart"] == null)
+                    {
+                        vCart = new Cart();
+                    }
+                    else
+                    {
+                        vCart = HttpContext.Current.Session["Cart"] as Cart;
+                    }
+
+                    var dict = vCart.Items.ToDictionary(x => x.ProductID);
+
+                    CartItem found;
+                    if (dict.TryGetValue(vProductID, out found))
+                    {
+                        found.Amount += vAmount;
+
+                    }
+                    else
+                    {
+                        vCart.Items.Add(new CartItem(vProductID, vAmount, vProductPrice, vName));
+                    }
+
+                    HttpContext.Current.Session["Cart"] = vCart;
+
+                    return true;
+                }
+                catch (Exception vError)
+                {
+                    return false;
+                }
+            }
+
+            public static bool deleteItemfromCart(int vProductID)
+            {
+                Cart vCart;
+                vCart = HttpContext.Current.Session["Cart"] as Cart;
+
+                vCart.Items.RemoveAll(x => x.ProductID == vProductID);
+
+                HttpContext.Current.Session["Cart"] = vCart;
                 return true;
+
             }
-            else
+
+            public static bool updateItemAmount(int vProductID, float currentAmount)
             {
-                return false;
+                Cart vCart;
+                vCart = HttpContext.Current.Session["Cart"] as Cart;
+                float amount = currentAmount;
+
+                var dict = vCart.Items.ToDictionary(x => x.ProductID);
+
+                CartItem found;
+                if (dict.TryGetValue(vProductID, out found))
+                {
+                    found.Amount = amount;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
             }
 
-        }
-
-        public static float summarizePricebyID(int vProductID)
-        {
-            float ergebnis = 0;
-            Cart vCart;
-            vCart = HttpContext.Current.Session["Cart"] as Cart;
-
-            var dict = vCart.Items.ToDictionary(x => x.ProductID);
-            CartItem found;
-            if (dict.TryGetValue(vProductID, out found))
+            public static float summarizePricebyID(int vProductID)
             {
-                decimal preis = found.Price;
-                float amount = found.Amount;
-                ergebnis = (int)preis * amount;
+                float ergebnis = 0;
+                Cart vCart;
+                vCart = HttpContext.Current.Session["Cart"] as Cart;
+
+                var dict = vCart.Items.ToDictionary(x => x.ProductID);
+                CartItem found;
+                if (dict.TryGetValue(vProductID, out found))
+                {
+                    decimal preis = found.Price;
+                    float amount = found.Amount;
+                    ergebnis = (int)preis * amount;
+                }
+                return ergebnis;
             }
-            return ergebnis;
         }
     }
-}
