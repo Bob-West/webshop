@@ -56,19 +56,12 @@
             <input type="button" id="change_user_data_button" value="Benutzerdaten ändern" />
             <input type="button" id="logout_button" value="Logout" onclick="location.href='@Url.Action("checkout_user_logout", "Checkout")'" />
 
-            //Debug.Write("USERID IST IST IST " + user.UserID);
-
-        
-           Order.save_Order();
-           
-            
+            <input type="button" id="logout_button" value="Kostenpflichtig bestellen" onclick="location.href='@Url.Action("VielenDank", "Home")'" />
         }
     }
     else
     {
         <h2> USER NULL </h2>
-    }
-
     }
 
 </body>

@@ -18,20 +18,25 @@ namespace Webshop.Controllers
 
         public ActionResult VielenDank()
         {
+            Shop.Order.save_Order();
+            HttpContext.Session["Cart"] = null;
             return View("danke");
         }
 
         public ActionResult sendMail()
         {
             //Shop.Order order;
-            if (Session["Cart"] == null || Session["User"] == null || Session["Order"] != null) // Change != null
+            if (Session["Cart"] == null || Session["User"] == null || Session["Order"] == null) // Change != null
             {
                 // Fehlermeldung
-                return View();
+                return View("index");
             }
             else
             {
-                clsEMail.SendEmail("consumer", new Dictionary<clsEMail.RecipientType, String>() { { clsEMail.RecipientType.To, "wqi33563@oepia.com" } }, "Test Mail", null);
+                //Change recipient email!!!!
+                String recipientEmail = "fvt69813@oepia.com";
+                clsEMail.SendEmail("consumer", new Dictionary<clsEMail.RecipientType, String>() { { clsEMail.RecipientType.To, recipientEmail } }, "Bestellbestätigung", null);
+                clsEMail.SendEmail("shop", new Dictionary<clsEMail.RecipientType, String>() { { clsEMail.RecipientType.To, recipientEmail } }, "Bestellung erhalten", null);
             }
 
             return View("danke");

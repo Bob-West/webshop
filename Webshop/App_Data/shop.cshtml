@@ -1,10 +1,55 @@
-﻿<!DOCTYPE html>
+﻿@using Webshop.Models
+@inherits System.Web.Mvc.WebViewPage
+
+
+@{
+    Shop.User user = (Shop.User)ViewBag.User;
+    Shop.Order order = (Shop.Order)ViewBag.Order;
+    Shop.Cart cart = (Shop.Cart)ViewBag.Cart;
+}
+
+<!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Bestellbestätigung</title>
+    <title>Bestellung erhalten</title>
 </head>
 <body>
+    Bestellung von @(user.salutation) @(user.lastname) @(user.firstname),
+     Übersicht der Bestellung (Nr. @(order.OrderID)). <br /><br />
+
+    <h3>Produktübersicht</h3> <br />
+    <table>
+        <thead>
+            <tr>
+                <th> </th>
+                <th>Name</th>
+                <th>Einzelpreis</th>
+                <th>Stückzahl</th>
+                <th>Positionssumme</th>
+            </tr>
+        </thead>
+
+        @foreach (var item in cart.Items)
+            {
+            <tr><td>@item.name</td><td>@item.Price</td><td>@item.Amount</td><td>@(item.Amount * (float)item.Price)</td></tr>
+        }
+    </table>
+
+    <h3>Kundendaten</h3>
+    <table>
+        <tr><td><h4>Rechnungsadressdaten:</h4> </td></tr>
+
+        <tr><td>Straße: @user.bill_street  <td>PLZ: @user.bill_zipcode </td></tr>
+        <tr><td>Land: @user.bill_country  </td> <td>Stadt: @user.bill_city </td></tr>
+
+        <tr><td><h4>Lieferadressdaten:</h4> </td></tr>
+
+        <tr><td>Straße: @user.delivery_street  <td>PLZ: @user.delivery_zipcode </td></tr>
+        <tr><td>Land: @user.delivery_country  </td> <td>Stadt: @user.delivery_city </td></tr>
+
+    </table>
 </body>
 </html>
+

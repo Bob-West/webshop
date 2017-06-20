@@ -12,7 +12,7 @@ using System.Web.Routing;
 
 namespace Webshop.Models
 {
-    public class clsEMail
+    public static class clsEMail
     {
 
         //class for e-mail composition & sending
@@ -21,13 +21,13 @@ namespace Webshop.Models
 
         private delegate void delegateSendEmailAsync(string vTemplateName, Dictionary<RecipientType, string> vAddresses, string vSubject, Dictionary<String, Object> vValues); //this is a generic pointer construction, it can point to any function using the given signature. it can execute asynchronously, that's why I use it.
 
-        public void SendEmailAsync(string vTemplateName, Dictionary<RecipientType, string> vAddresses, string vSubject, Dictionary<String, Object> vValues)
+        public static void SendEmailAsync(string vTemplateName, Dictionary<RecipientType, string> vAddresses, string vSubject, Dictionary<String, Object> vValues)
         {
             delegateSendEmailAsync vCallSendEmail = new delegateSendEmailAsync(SendEmail); //this uses the generic pointer to point to the function SendEmail
             vCallSendEmail.BeginInvoke(vTemplateName, vAddresses, vSubject, vValues, new AsyncCallback(SendEmailAsyncFinish), null); //the execution of function SendEmail is started asynchronously, when it finishes it calls SendEmailAsyncFinish
         }
 
-        private void SendEmailAsyncFinish(IAsyncResult vResult) //this function is called upon finish of the async operation. its only purpose is to close the generic pointer construction which is still using memory.
+        private static void SendEmailAsyncFinish(IAsyncResult vResult) //this function is called upon finish of the async operation. its only purpose is to close the generic pointer construction which is still using memory.
         {
             AsyncResult vResultTemp = vResult as AsyncResult; //cast vResult to AsyncResult
             delegateSendEmailAsync vDelegate = vResultTemp.AsyncDelegate as delegateSendEmailAsync; //receive the generic pointer construction
@@ -41,7 +41,7 @@ namespace Webshop.Models
             }
         }
 
-        public void SendEmail(string vTemplateName, Dictionary<RecipientType, string> vAddresses, string vSubject, Dictionary<String, Object> vValues)
+        public static void SendEmail(string vTemplateName, Dictionary<RecipientType, string> vAddresses, string vSubject, Dictionary<String, Object> vValues)
         {
 
             //composes an email and returns the HTML code
@@ -51,7 +51,7 @@ namespace Webshop.Models
             String vEmailContent;
             MailMessage vMessage = new MailMessage();
             SmtpClient vClient;
-            ContentDisposition vContentDispo;
+            //ContentDisposition vContentDispo;
 
             //check for mandatory values
             if (vAddresses.ContainsKey(RecipientType.To) == false || vAddresses[RecipientType.To].Length == 0)
@@ -63,7 +63,8 @@ namespace Webshop.Models
             if (File.Exists(System.Web.Hosting.HostingEnvironment.MapPath("/App_Data/" + vTemplateName + ".cshtml")))
             {
                 //vEmailContent = RenderRazorViewToString((Controller)ControllerBuilder.Current.GetControllerFactory().CreateController(HttpContext.Current.Request.RequestContext, "Home"), System.Web.Hosting.HostingEnvironment.MapPath("/App_Data/" + vTemplateName + ".cshtml"), null);
-                vEmailContent = this.RenderRazorViewToString(System.Web.Hosting.HostingEnvironment.MapPath("/App_Data/" + vTemplateName + ".cshtml"), null);
+                //vEmailContent = this.RenderRazorViewToString(System.Web.Hosting.HostingEnvironment.MapPath("/App_Data/" + vTemplateName + ".cshtml"), null);
+                vEmailContent = Webshop.Controllers.FakeController.RenderViewToString("Fake", "/App_Data/" + vTemplateName + ".cshtml", null);
             }
             else
             {
@@ -97,7 +98,7 @@ namespace Webshop.Models
             vClient.Send(vMessage);
         }
 
-        public static string RenderRazorViewToString(this Controller controller, string viewName, object model)
+        /*public static string RenderRazorViewToString(this Controller controller, string viewName, object model)
         {
             controller.ViewData.Model = model;
             using (var sw = new StringWriter())
@@ -108,6 +109,6 @@ namespace Webshop.Models
                 viewResult.ViewEngine.ReleaseView(controller.ControllerContext, viewResult.View);
                 return sw.GetStringBuilder().ToString();
             }
-        }
+        }*/
     }
 }

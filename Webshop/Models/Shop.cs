@@ -12,7 +12,7 @@ namespace Webshop.Models
         public class Cart
         {
             public int UserID;
-            
+
             public List<CartItem> Items;
 
             public Cart()
@@ -143,7 +143,7 @@ namespace Webshop.Models
                 {
                     objSQLconn.Open();
                     String insertCommand = "INSERT INTO tblUsers (user_salutation,user_title,user_firstname,user_lastname,user_email,user_tel,user_password,user_bill_street,user_bill_zipcode,user_bill_city,user_bill_country,user_delivery_street,user_delivery_zipcode,user_delivery_city,user_delivery_country) " +
-                        "VALUES (@user_salutation, @user_title, @user_firstname, @user_lastname,@user_email, @user_tel, @user_password, @user_bill_street, @user_bill_zipcode, @user_bill_city, @user_bill_country, @user_delivery_street, @user_delivery_zipcode, @user_delivery_city, @user_delivery_country)";
+                        "VALUES (@user_salutation, @user_title, @user_firstname, @user_lastname,@user_email, @user_tel, @user_password, @user_bill_street, @user_bill_zipcode, @user_bill_city, @user_bill_country, @user_delivery_street, @user_delivery_zipcode, @user_delivery_city, @user_delivery_country) SELECT CAST(scope_identity() AS int)";
                     vSQLcommand = new SqlCommand(insertCommand, objSQLconn);
                     vSQLcommand.Parameters.AddWithValue("@user_salutation", newUser.salutation);
                     vSQLcommand.Parameters.AddWithValue("@user_title", newUser.title);
@@ -161,14 +161,13 @@ namespace Webshop.Models
                     vSQLcommand.Parameters.AddWithValue("@user_delivery_city", newUser.delivery_city);
                     vSQLcommand.Parameters.AddWithValue("@user_delivery_country", newUser.delivery_country);
 
-                    /*var user_id = (int)vSQLcommand.ExecuteScalar();
-                    newUser.UserID = user_id;*/
 
                     int insertSuccessfull = vSQLcommand.ExecuteNonQuery();
 
                     if (insertSuccessfull > 0)
                     {
-
+                        var newUserRegisteredID = (int)vSQLcommand.ExecuteScalar();
+                        newUser.UserID = newUserRegisteredID;
                         return newUser;
                     }
                     else
@@ -323,92 +322,88 @@ namespace Webshop.Models
             }
             return ergebnis;
         }
-    }
-    public class Order
-    {
-        public int UserID;
-        public int OrderID;
-        public string timestamp;
+        public class Order
+        {
+            public int UserID;
+            public int OrderID;
+            public string timestamp;
 
-        public Order()
-        {
-            UserID = 0;
-            OrderID = 0;
-            timestamp = "";
-        }
-        public Order(int UserID, int OrderID, string timestamp)
-        {
-            this.UserID = UserID;
-            this.OrderID = OrderID;
-            this.timestamp = timestamp;
-        }
-        public static bool save_Order()
-        {
-            SqlCommand vSQLcommand1;
-            SqlCommand vSQLcommand2;
-            int userID;
-            
-            try
+            public Order()
             {
-               
-                using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
+                UserID = 0;
+                OrderID = 0;
+                timestamp = "";
+            }
+            public Order(int UserID, int OrderID)
+            {
+                this.UserID = UserID;
+                this.OrderID = OrderID;
+                this.timestamp = timestamp;
+            }
+            public static bool save_Order()
+            {
+                SqlCommand vSQLcommand1;
+                SqlCommand vSQLcommand2;
+                int userID;
+
+                try
                 {
-                    objSQLconn.Open();
-                    String insertCommand_order = "INSERT INTO tblOrder (user_id) VALUES (@order_userID); SELECT CAST(scope_identity() AS int)";
-                    String insertCommand_order_prd = "INSERT INTO tblOrder_Product (order_id,product_id,product_amount) VALUES (@order_ID, @product_id, @order_product_amount);";
-                
-                    vSQLcommand1 = new SqlCommand(insertCommand_order, objSQLconn);
 
-                    Shop.User derUser = new Shop.User();
-                    derUser = HttpContext.Current.Session["User"] as Shop.User;
-                    userID = derUser.UserID;
-                    vSQLcommand1.Parameters.AddWithValue("@order_userID", userID);
-
-                    Shop.Cart derCart = new Shop.Cart();
-                    derCart = HttpContext.Current.Session["Cart"] as Shop.Cart;
-
-                    var order_id = (int)vSQLcommand1.ExecuteScalar();
-                    int i = 0;
-                    foreach (var items in derCart.Items)
+                    using (SqlConnection objSQLconn = new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["shop"].ConnectionString))
                     {
-                        i++;
-                        vSQLcommand2 = new SqlCommand(insertCommand_order_prd, objSQLconn);
-                        vSQLcommand2.Parameters.AddWithValue("@order_ID", order_id);
-                        vSQLcommand2.Parameters.AddWithValue("@product_ID", items.ProductID);
-                        vSQLcommand2.Parameters.AddWithValue("@order_product_amount", 45);
-                        int insertSuccessfull2 = vSQLcommand2.ExecuteNonQuery();
-                        if (insertSuccessfull2 > 0)
+                        objSQLconn.Open();
+                        String insertCommand_order = "INSERT INTO tblOrder (user_id) VALUES (@order_userID); SELECT CAST(scope_identity() AS int)";
+                        String insertCommand_order_prd = "INSERT INTO tblOrder_Product (order_id,product_id,product_amount) VALUES (@order_ID, @product_id, @order_product_amount);";
+
+                        vSQLcommand1 = new SqlCommand(insertCommand_order, objSQLconn);
+
+                        Shop.User derUser = HttpContext.Current.Session["User"] as Shop.User;
+                        userID = derUser.UserID;
+                        vSQLcommand1.Parameters.AddWithValue("@order_userID", userID);
+
+                        Shop.Cart derCart = HttpContext.Current.Session["Cart"] as Shop.Cart;
+
+                        var order_id = (int)vSQLcommand1.ExecuteScalar();
+                        //int insertSuccessfull1 = vSQLcommand1.ExecuteNonQuery();
+                        int i = 0;
+                        foreach (var items in derCart.Items)
                         {
-                            Debug.Print("Inserts "+i);
+                            vSQLcommand2 = new SqlCommand(insertCommand_order_prd, objSQLconn);
+                            vSQLcommand2.Parameters.AddWithValue("@order_ID", order_id);
+                            vSQLcommand2.Parameters.AddWithValue("@product_ID", items.ProductID);
+                            vSQLcommand2.Parameters.AddWithValue("@order_product_amount", 45);
+                            int insertSuccessfull2 = vSQLcommand2.ExecuteNonQuery();
+                            if (insertSuccessfull2 > 0)
+                            {
+                                Debug.Print("Successful Order_Product insert Nr. " + (++i));
+                            }
+                            else
+                            {
+                                Debug.Print("insert product fehlgeschlagen nummer " + (++i));
+                                return false;
+                            }
+                        }
+                        if (order_id > 0)
+                        {
+                            HttpContext.Current.Session["Order"] = new Order(userID, order_id);
+                            return true;
+
                         }
                         else
                         {
-                            Debug.Print("insert product fehlgeschlagen nummer " + i);
+                            Debug.Print("insert order fehlgeschlagen");
                             return false;
                         }
-                    }                
+                        
 
-                    int insertSuccessfull1 = vSQLcommand1.ExecuteNonQuery();
-                
-                    if (insertSuccessfull1 > 0)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        Debug.Print("insert order fehlgeschlagen" + insertSuccessfull1);
-                        return false;
-                    }
-                   /* Order newOrder;
-                    newOrder = HttpContext.Current.Session["Order"] as Order;*/
-                    
 
+                    }
                 }
-            }
-            catch (Exception vError)
-            {
-                Debug.Print("DB geht nicht - save order fkt" + vError);
-                return false;
+                catch (Exception vError)
+                {
+                    Debug.Print("DB geht nicht - save order fkt" + vError);
+                    return false;
+                }
             }
         }
     }

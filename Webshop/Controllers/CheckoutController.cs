@@ -96,7 +96,7 @@ namespace Webshop.Controllers
             }
             else
             {
-              
+                
                 newUser.salutation = Request.Form["salutation"];
                 newUser.title = Request.Form["register_title"];
                 newUser.firstname = Request.Form["register_firstname"];
@@ -127,6 +127,7 @@ namespace Webshop.Controllers
 
             if (Shop.checkEmail(newUser.email) == false)
             {
+                
                 Debug.Print("email bereits vorhanden! : "+newUser.email);
                 return View("Index");
             }
