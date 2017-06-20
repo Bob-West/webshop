@@ -91,24 +91,11 @@ namespace Webshop.Models
             vMessage.IsBodyHtml = true;
             vMessage.Body = vEmailContent;
 
-            vClient = new SmtpClient();
-            vClient.Host = "smtp.gmail.com";
-            vClient.Credentials = new System.Net.NetworkCredential("smtpdummycweb", "ilovecweb");
+            vClient = new SmtpClient("smtp.gmail.com", 587);
+            vClient.UseDefaultCredentials = false;
+            vClient.Credentials = new System.Net.NetworkCredential("smtpdummycweb@gmail.com", "ilovecweb");
             vClient.EnableSsl = true;
             vClient.Send(vMessage);
         }
-
-        /*public static string RenderRazorViewToString(this Controller controller, string viewName, object model)
-        {
-            controller.ViewData.Model = model;
-            using (var sw = new StringWriter())
-            {
-                var viewResult = ViewEngines.Engines.FindPartialView(controller.ControllerContext, viewName);
-                var viewContext = new ViewContext(controller.ControllerContext, viewResult.View, controller.ViewData, controller.TempData, sw);
-                viewResult.View.Render(viewContext, sw);
-                viewResult.ViewEngine.ReleaseView(controller.ControllerContext, viewResult.View);
-                return sw.GetStringBuilder().ToString();
-            }
-        }*/
     }
 }

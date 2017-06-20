@@ -19,6 +19,7 @@ namespace Webshop.Controllers
         public ActionResult VielenDank()
         {
             Shop.Order.save_Order();
+            sendMail();
             HttpContext.Session["Cart"] = null;
             return View("danke");
         }
@@ -34,12 +35,12 @@ namespace Webshop.Controllers
             else
             {
                 //Change recipient email!!!!
-                String recipientEmail = "fvt69813@oepia.com";
+                String recipientEmail = "azv82041@oepia.com";
                 clsEMail.SendEmail("consumer", new Dictionary<clsEMail.RecipientType, String>() { { clsEMail.RecipientType.To, recipientEmail } }, "Bestellbestätigung", null);
                 clsEMail.SendEmail("shop", new Dictionary<clsEMail.RecipientType, String>() { { clsEMail.RecipientType.To, recipientEmail } }, "Bestellung erhalten", null);
+                return View("danke");
             }
 
-            return View("danke");
         }
 
     }
