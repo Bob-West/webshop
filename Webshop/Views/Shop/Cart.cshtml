@@ -59,7 +59,11 @@
                     </table>
         }
         <input type="button" value="Zurück" onclick="location.href='@Url.Action("Index", "Home")'" />
-        <input type="button" value="Weiter" onclick="location.href='@Url.Action("Index", "Checkout")'" />
+        @if ((Session["Cart"] != null) && (Model.Items.Count > 0))
+        {
+        <input type="button" value="Checkout" onclick="location.href='@Url.Action("Index", "Checkout")'" />
+        }
+
     </div>
 </body>
 </html>

@@ -1,0 +1,19 @@
+﻿@using Webshop.Models;
+
+@{Shop.Cart cart = (Shop.Cart)Session["Cart"]; }
+@{Shop.User user = (Shop.User)Session["User"]; }
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Bestellbestätigung</title>
+</head>
+<body>
+    Sehr geehrter @user.firstname @user.lastname,
+    anbei eine Übersicht Ihrer Bestellung (Nr. 1234)
+</body>
+</html>
+}
