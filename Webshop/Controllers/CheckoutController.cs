@@ -96,6 +96,7 @@ namespace Webshop.Controllers
             }
             else
             {
+              
                 newUser.salutation = Request.Form["salutation"];
                 newUser.title = Request.Form["register_title"];
                 newUser.firstname = Request.Form["register_firstname"];

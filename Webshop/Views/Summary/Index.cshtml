@@ -1,5 +1,6 @@
-﻿@using Webshop.Models;
-@using System.Diagnostics;
+﻿@using System.Diagnostics;
+@using Webshop.Models
+
 <!DOCTYPE html>
 
 <html>
@@ -38,28 +39,37 @@
                     <tr><td>@item.name</td><td>@item.Price</td><td>@item.Amount</td><td>@(item.Amount * (float)item.Price)</td></tr>
                 }
             </table>
-        }
 
+            <h3>Kundendaten</h3>
+            <table>
+                <tr><td>Vorname: @user.firstname  </td><td>Nachname: @user.lastname </td></tr>
+                <tr><td>email: @user.email  </td><td>Telephon: @user.phone </td></tr>
+                <tr><td><h4>Rechnungsadressdaten:</h4> </td></tr>
+                <tr><td>Straße: @user.bill_street  <td>PLZ: @user.bill_zipcode </td></tr>
+                <tr><td>Land: @user.bill_country  </td> <td>Stadt: @user.bill_city </td></tr>
+                <tr><td><h4>Lieferadressdaten:</h4> </td></tr>
+                <tr><td>Straße: @user.delivery_street  <td>PLZ: @user.delivery_zipcode </td></tr>
+                <tr><td>Land: @user.delivery_country  </td> <td>Stadt: @user.delivery_city </td></tr>
 
-        <h3>Kundendaten</h3>
-        <table>
-            <tr><td>Vorname: @user.firstname  </td><td>Nachname: @user.lastname </td></tr>
-            <tr><td>email: @user.email  </td><td>Telephon: @user.phone </td></tr>
-            <tr><td><h4>Rechnungsadressdaten:</h4> </td></tr>
-            <tr><td>Straße: @user.bill_street  <td>PLZ: @user.bill_zipcode </td></tr>
-            <tr><td>Land: @user.bill_country  </td> <td>Stadt: @user.bill_city </td></tr>
-            <tr><td><h4>Lieferadressdaten:</h4> </td></tr>
-            <tr><td>Straße: @user.delivery_street  <td>PLZ: @user.delivery_zipcode </td></tr>
-            <tr><td>Land: @user.delivery_country  </td> <td>Stadt: @user.delivery_city </td></tr>
+            </table>
 
-        </table>
+            <input type="button" id="change_user_data_button" value="Benutzerdaten ändern" />
+            <input type="button" id="logout_button" value="Logout" onclick="location.href='@Url.Action("checkout_user_logout", "Checkout")'" />
+
+            //Debug.Write("USERID IST IST IST " + user.UserID);
+
         
-        <input type="button" id="change_user_data_button" value="Benutzerdaten ändern" />
-        <input type="button" id="logout_button" value="Logout" onclick="location.href='@Url.Action("checkout_user_logout", "Checkout")'"/>
+           Order.save_Order();
+           
+            
+        }
     }
     else
     {
-        <h2>User NULL</h2>
+        <h2> USER NULL </h2>
     }
+
+    }
+
 </body>
 </html>
